@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android TV İçin Özel ve Modern Launcher: "Dizdar Lancher" Projesi ve Kurulum Kılavuzu</title>
+    <style>
+        :root {
+            --bg-color: #0a0e17;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-cyan: #00e5ff;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --code-bg: #0f1420;
+            --code-text: #e2e8f0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(10, 14, 23, 0.8), rgba(5, 7, 10, 0.9));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            color: var(--accent-cyan);
+            font-size: 2.2rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            font-weight: 800;
+        }
+
+        h2 {
+            color: var(--accent-cyan);
+            font-size: 1.5rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        h3 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .alert {
+            background-color: rgba(0, 229, 255, 0.05);
+            border-left: 4px solid var(--accent-cyan);
+            border-radius: 4px;
+            padding: 15px;
+            margin: 25px 0;
+        }
+
+        .alert p {
+            margin: 0;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        code {
+            font-family: "Fira Code", "Courier New", Courier, monospace;
+            background-color: var(--code-bg);
+            color: #ff79c6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: var(--code-text);
+            padding: 0;
+            border-radius: 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .keyword { color: #ff79c6; }
+        .string { color: #f1fa8c; }
+        .comment { color: #6272a4; }
+        .attr { color: #50fa7b; }
+        .tag { color: #ff79c6; }
+
+        .btn-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1f));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 600px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 20px;
+            }
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .feature-card h3 {
+            margin-top: 0;
+            color: var(--accent-cyan);
+        }
+
+        .feature-card p {
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Android TV İçin Özel ve Modern Launcher: "Dizdar Lancher" Projesi ve Kurulum Kılavuzu</h1>
+        <p>Bu makale/rehber, Android TV (Android 9+) cihazlar için geliştirdiğimiz <strong>Dizdar Lancher</strong> projesinin teknik altyapısını, D-pad (kumanda) odak yönetimini ve cihazınızı reklam yüklü varsayılan launcher'dan kurtarıp bu uygulamayı varsayılan ana ekran yapma adımlarını detaylandırır.</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 30px 0;">
+
+        <h2>1. Bir Android Uygulaması Nasıl "Varsayılan Launcher" Yapılır? (Teknik Altyapı)</h2>
+        <p>Android işletim sisteminde, kumandanın veya cihazın üzerindeki <strong>Home (Ana Ekran / Ev)</strong> tuşuna basıldığında hangi uygulamanın açılacağını belirleyen şey, o uygulamanın <code>AndroidManifest.xml</code> dosyasındaki aktivite tanımlarıdır.</p>
+        <p>Dizdar Lancher uygulamasını Android TV'nin resmi olarak tanıyıp varsayılan yapabilmesi için manifest dosyasında şu kritik ayarlar gerçekleştirilmiştir:</p>
+
+        <h3>A. Home ve Default Intent Filtresi</h3>
+        <p>Aktivitemizin içerisine yerleştirilen bu filtre, uygulamanın bir ana ekran (Launcher) olduğunu Android işletim sistemine bildirir:</p>
+        <pre><code><span class="tag">&lt;intent-filter</span> <span class="attr">android:priority</span>=<span class="string">"1000"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span> <span class="tag">/&gt;</span>
+    <span class="tag">&lt;category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.HOME"</span> <span class="tag">/&gt;</span>
+    <span class="tag">&lt;category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> <span class="tag">/&gt;</span>
+<span class="tag">&lt;/intent-filter&gt;</span></code></pre>
+        <ul>
+            <li><strong><code>android.intent.category.HOME</code>:</strong> Uygulamanın ana ekran olarak davranacağını belirtir.</li>
+            <li><strong><code>android.intent.category.DEFAULT</code>:</strong> Android'in bu aktiviteyi varsayılan eylemler için başlatabilmesini sağlar.</li>
+            <li><strong><code>android:priority="1000"</code>:</strong> Sistemde varsayılan launcher tetiklendiğinde uygulamanın yüksek öncelikle değerlendirilmesini sağlar. Bu sayede Home tuşuna basıldığında Android kullanıcıya "Hangi uygulamayı kullanmak istersiniz?" sorusunu sorarak Dizdar Lancher'ı listeler.</li>
+        </ul>
+
+        <h3>B. Tekil Örnek Çalışma Modu (Single Instance)</h3>
+        <p>Launcher uygulamaları arka planda birden fazla kez açılmamalıdır. Home tuşuna her basıldığında yeni bir pencere açılması yerine mevcut pencerenin ön plana gelmesi için aktiviteye şu nitelikler verilmiştir:</p>
+        <ul>
+            <li><strong><code>android:launchMode="singleInstance"</code>:</strong> Aktivitenin her zaman kendi ayrı görevinde (Task) ve tek bir örnek (Instance) olarak çalışmasını garanti eder.</li>
+            <li><strong><code>android:stateNotNeeded="true"</code>:</strong> Aktivitenin önceki durumunu kaydetmesine gerek kalmadan doğrudan temiz bir şekilde başlatılmasını sağlar.</li>
+        </ul>
+
+        <h2>2. D-pad (Kumanda) Odak ve Navigasyon Çözümü</h2>
+        <p>Android TV uygulamalarında dokunmatik ekran olmadığından, her şey <strong>Odaklanma (Focus)</strong> mantığına dayanır. Jetpack Compose'un varsayılan odak arama (Focus Search) algoritması bazen 2D düzlemde köşegen geçişleri (örneğin sağ üstten sol alta) çözemeyip kumanda odağını kilitleyebilir. Bunu önlemek için uygulamada özel yönlendirmeler kullanılmıştır:</p>
+
+        <h3>A. Yukarı/Aşağı Buton Navigasyonunu Kurala Bağlamak</h3>
+        <p>Sağ üstteki buton satırına (Giriş Kaynakları, Launcher Ayarları, Sistem Ayarları) aşağı tuşuna basıldığında nereye gidileceği belirtilmiştir:</p>
+        <pre><code><span class="comment">// Sağ üstteki buton satırı (Row)</span>
+Row(
+  modifier = Modifier.focusProperties { 
+    canFocus = !isSortEditMode 
+    down = firstAppFocusRequester <span class="comment">// Aşağı basınca doğrudan ilk uygulamaya odaklanır</span>
+  }
+)</code></pre>
+        <p>Ve ilk sıradaki uygulamalara (Favoriler satırı veya favori yoksa all apps grid'inin ilk satırındaki uygulamalar) yukarı basıldığında nereye gideceği kodlanmıştır:</p>
+        <pre><code><span class="comment">// İlk sıradaki uygulamaların kart modu</span>
+modifier = Modifier.focusProperties {
+  up = topBarFocusRequester <span class="comment">// Yukarı basınca doğrudan Girişler butonuna odaklanır</span>
+}</code></pre>
+
+        <h3>B. Odağı Otomatik Geri Kazanma (LaunchedEffect)</h3>
+        <p>Ekran ilk açıldığında veya Girişler/Ayarlar çekmecesi kapatıldığında odağın boşluğa düşmesini engellemek için akıllı bir dinleyici yerleştirilmiştir:</p>
+        <pre><code>LaunchedEffect(isSortEditMode, showLauncherSettingsDialog, showInputsDialog) {
+  delay(<span class="keyword">250</span>) <span class="comment">// Çekmece geçişlerinin tamamlanmasını bekler</span>
+  if (!showLauncherSettingsDialog && !showInputsDialog) {
+    try {
+      firstAppFocusRequester.requestFocus() <span class="comment">// Odağı otomatik olarak ilk uygulama kartına verir</span>
+    } catch (e: Exception) {}
+  }
+}</code></pre>
+
+        <h2>3. Adım Adım TV Kurulum ve Varsayılan Yapma Rehberi (ADB)</h2>
+        <p>Geliştirdiğimiz bu launcher'ı televizyonunuza yüklemek ve orijinal, reklamlı launcher yerine kalıcı olarak ana ekran yapmak için aşağıdaki adımları sırasıyla uygulayabilirsiniz.</p>
+
+        <h3>Adım 1: TV'de Geliştirici Seçeneklerini ve ADB'yi Açın</h3>
+        <ol>
+            <li>TV'nizin <strong>Ayarlar > Cihaz Tercihleri > Hakkında</strong> menüsüne gidin.</li>
+            <li><strong>"Yapım Numarası" (Build Number)</strong> seçeneğinin üzerine gelip kumandanın OK tuşuna <strong>7 kez üst üste</strong> basın. Ekranda <em>"Artık bir geliştiricisiniz!"</em> uyarısı belirecektir.</li>
+            <li>Bir geri gelip <strong>"Geliştirici Seçenekleri"</strong> menüsüne girin.</li>
+            <li><strong>"ADB Hata Ayıklama" (USB Debugging / Network Debugging)</strong> seçeneğini aktif hale getirin.</li>
+        </ol>
+
+        <h3>Adım 2: TV'nin IP Adresini Öğrenin</h3>
+        <p><strong>Ayarlar > Ağ ve İnternet</strong> menüsünden TV'nizin bağlı olduğu Wi-Fi veya Ethernet ağının üzerine tıklayarak <strong>IP Adresini</strong> (Örn: <code>192.168.1.101</code>) not edin.</p>
+
+        <h3>Adım 3: Bilgisayardan TV'ye Bağlanın</h3>
+        <p>Bilgisayarınızda terminal (PowerShell veya CMD) açıp şu komutla TV'nize kablosuz olarak bağlanın:</p>
+        <pre><code>adb connect 192.168.1.101:5555</code></pre>
+        <p><em>(TV ekranında çıkan "Bu bilgisayardan hata ayıklamaya her zaman izin ver" uyarısını onaylayın).</em></p>
+
+        <h3>Adım 4: APK Dosyasını TV'ye Kurun</h3>
+        <p>Derlenmiş olan APK dosyasını TV'nize kurmak veya mevcut olanı güncellemek için şu komutu çalıştırın:</p>
+        <pre><code>adb install -r "app-debug.apk"</code></pre>
+
+        <h3>Adım 5: TV Kumandası Home Tuşunu Dizdar Lancher'a Atayın</h3>
+        <ol>
+            <li>Kumandadan <strong>Home (Ev)</strong> tuşuna basın.</li>
+            <li>TV ekranında karşınıza <em>"Ana ekran olarak kullanılacak uygulama seçin"</em> sorusu çıkacaktır.</li>
+            <li>Listeden <strong>Dizdar Lancher</strong>'ı seçip altındaki <strong>"Her zaman" (Always)</strong> butonuna tıklayın.</li>
+            <li>Artık Home tuşuna her bastığınızda Dizdar Lancher açılacaktır.</li>
+        </ol>
+
+        <div class="alert">
+            <p>💡 İPUCU: Orijinal Google TV / Android TV Launcher'ını tamamen devre dışı bırakıp TV'nizin açılışını hızlandırmak ve kalıcı tek launcher yapmak için aşağıdaki adımı uygulayabilirsiniz.</p>
+        </div>
+
+        <h2>4. Orijinal Reklamlı TV Launcher'ını Tamamen Devre Dışı Bırakmak (Kalıcı Çözüm)</h2>
+        <p>Aşağıdaki ADB komutları ile orijinal reklamlı launcher'ı dilediğiniz gibi açıp kapatabilirsiniz:</p>
+        
+        <h3>Orijinal Launcher'ı Kapatma (Dizdar Lancher'ı Tek Ev Sahibi Yapmak İçin):</h3>
+        <pre><code>adb shell pm disable-user --user 0 com.google.android.tvlauncher</code></pre>
+
+        <h3>Orijinal Launcher'ı Geri Açma (Fabrika Arayüzüne Dönmek İçin):</h3>
+        <pre><code>adb shell pm enable com.google.android.tvlauncher</code></pre>
+
+        <h2>5. Dizdar Lancher Öne Çıkan Özellikler</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Özel Favori Alanı</h3>
+                <p>İstediğiniz uygulamaya basılı tutarak en üstteki yatay şeritte ("Favori Uygulamalarım") sabitleyebilirsiniz.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Manuel Sürükle-Bırak Sıralama</h3>
+                <p>Kumanda D-pad tuşlarıyla uygulamaları sağa, sola, yukarı ve aşağı taşıyarak kişiselleştirilmiş sıralama yapabilirsiniz.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Renk Seçici Paleti</h3>
+                <p>4x4 remote-navigable paletten başlangıç ve bitiş renklerini seçerek kendi özel gradyan arka planınızı oluşturabilirsiniz.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Uygulama Gizleme Yönetimi</h3>
+                <p>Sistem araçları veya görünmesini istemediğiniz medya uygulamalarını ayarlardan gizleyebilir, arayüzde temiz tutabilirsiniz.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
