@@ -20,3 +20,13 @@ Sade, hızlı ve gereksiz içeriklerden arındırılmış Android TV launcher.
 3. Bilinmeyen kaynaklardan yüklemeye izin verin.
 4. APK’yı kurun.
 5. Launcher olarak seçin.
+
+## İndirme
+
+APK dosyasını Releases bölümünden indirebilirsiniz.
+
+## Kurulum Rehberi
+
+Detaylı kurulum, ADB bağlantısı ve varsayılan launcher yapma adımları için:
+
+[Kurulum Rehberini Aç](rehberi.html)
